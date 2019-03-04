@@ -10,6 +10,8 @@
         <class>org.kenta.kosugi.model.Actor</class>
         <class>org.kenta.kosugi.model.Address</class>
         <class>org.kenta.kosugi.model.City</class>
+        <class>org.kenta.kosugi.model.Film</class>
+        <class>org.kenta.kosugi.model.Language</class>
     </persistence-unit>
 
 </persistence>

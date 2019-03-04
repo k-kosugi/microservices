@@ -14,7 +14,9 @@ import java.util.Date;
         @Index(name = "idx_fk_city_id", columnList = "city_id"),
         @Index(name = "idx_location", columnList = "location")
 })
-@NamedQuery(name = "findAll", query = "select a from Address a")
+@NamedQueries({
+        @NamedQuery(name = "allAddress", query = "select a from Address a")
+})
 public class Address implements Serializable {
 
   @Id
@@ -32,7 +34,7 @@ public class Address implements Serializable {
   public String district;
 
   @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "city_id")
+  @PrimaryKeyJoinColumn(name = "city_id", referencedColumnName = "city_id")
   public City city;
 
   @Column(name = "postal_code", length = 10)
