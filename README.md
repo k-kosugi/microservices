@@ -48,7 +48,7 @@ http://{WildFlyのIP}:8080/api/sakila/films
 
 ### MySQL
 ※ docker for Macを利用します。
-0. docker volumeを作成します。
+1. docker volumeを作成します。
     ```
     $ docker volume create mysql_volume
     ```
