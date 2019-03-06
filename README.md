@@ -45,6 +45,22 @@ http://{WildFlyのIP}:8080/api/sakila/films
 ```
 
 ## 準備
+### 本アプリケーションのダウンロードとビルド
+※ gitを利用します。
+1. git cloneコマンドを利用して本プロジェクトをクローンします。
+    ```
+    git clone https://github.com/k-kosugi/microservices.git
+    ```
+1. gradleを利用してビルドします。
+    ```
+    gradlew build
+    ```
+    * Gradle Wrapperを使用しているので、必要に応じてgradleがダウンロードされます。
+    * 詳しくは[Gradl Wrapperとは](http://gradle.monochromeroad.com/docs/userguide/gradle_wrapper.html)を参照ください。
+1. build/libsディレクトリにwarファイルが作成されます。
+1. warファイルをWildFlyにデプロイします。
+    * 将来的にはDockerfileを記述して自動デプロイするようにします。
+    * ${WILDFLY}/standalone/depoyディレクトリにwarファイルを放り込むことでデプロイ可能です。
 
 ### MySQL
 ※ docker for Macを利用します。
@@ -118,31 +134,14 @@ http://{WildFlyのIP}:8080/api/sakila/films
     ```
     $ ${WILDFLY}/bin/jboss-cli.sh --connect --command=":shutdown"
     ```
-    
-## 本アプリケーションのダウンロードとビルド
-※ gitを利用します。
-1. git cloneコマンドを利用して本プロジェクトをクローンします。
-    ```
-    git clone https://github.com/k-kosugi/microservices.git
-    ```
-1. gradleを利用してビルドします。
-    ```
-    gradlew build
-    ```
-    * Gradle Wrapperを使用しているので、必要に応じてgradleがダウンロードされます。
-    * 詳しくは[Gradl Wrapperとは](https://maku77.github.io/gradle/gradle-wrapper.html)を参照ください。
-1. build/libsディレクトリにwarファイルが作成されます。
-1. warファイルをWildFlyにデプロイします。
-    * 将来的にはDockerfileを記述して自動デプロイするようにします。
-    * ${WILDFLY}/standalone/depoyディレクトリにwarファイルを放り込むことでデプロイ可能です。
-
+  
 ## 利用技術
 利用技術は以下の通りとなっています。
 
 - git/github
 - gradle
     - Java EEアプリケーション(warファイル)のビルド・テスト・パッケージング
-    - Mavneリポジトリからのライブラリ自動ダウンロード
+    - Mavenリポジトリからのライブラリ自動ダウンロード
 - Java EE8 - WildFlyを想定
     - JAX-RS(RESTEasy - WildFly)
     - JAXB(オブジェクトをJSON化する際に裏で利用)
