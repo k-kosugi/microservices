@@ -43,9 +43,9 @@ MySQLのsakilaサンプルを利用して作成したAPIです。
     }
   
     ```
-* http://${WildFlyのIP}:8080/ms/api/sakila/film/<映画名>
+* http://${WildFlyのIP}:8080/ms/api/sakila/film/{映画名}
     * 登録されている映画から映画名で検索した結果を取得
-* http://${WildFlyのIP}:8080/ms/api/sakila/<id>
+* http://${WildFlyのIP}:8080/ms/api/sakila/film/{id}
     * 登録されている映画からfilm_idで映画を検索
 
 ## 準備
