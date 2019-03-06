@@ -9,6 +9,7 @@
         <jta-data-source>java:/MySqlDS</jta-data-source>
         <class>org.kenta.kosugi.model.Actor</class>
         <class>org.kenta.kosugi.model.Address</class>
+        <class>org.kenta.kosugi.model.Category</class>
         <class>org.kenta.kosugi.model.City</class>
         <class>org.kenta.kosugi.model.Film</class>
         <class>org.kenta.kosugi.model.FilmCategory</class>

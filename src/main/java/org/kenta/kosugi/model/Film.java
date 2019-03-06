@@ -1,6 +1,21 @@
 package org.kenta.kosugi.model;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,9 +26,10 @@ import java.util.Date;
         @Index(name = "idx_title", columnList = "title")
 })
 @NamedQueries({
-        @NamedQuery(name = "allFilm", query = "select a from Film a")
+        @NamedQuery(name = "allFilm", query = "select a from Film a"),
+        @NamedQuery(name = "filmByTitle", query = "select a from Film a where a.title like :title")
 })
-public class Film extends SuperModel {
+public class Film implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -52,12 +68,16 @@ public class Film extends SuperModel {
     @Column(name = "rating")
     public String rating;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "film_id")
-    public FilmCategory filmCategory;
-
     @Column(name = "special_features")
     public String specialFeatures;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "last_update")
+    public Date lastUpdate;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name = "film_id", referencedColumnName = "film_id")
+    public FilmCategory filmCategory;
 
 
 }
