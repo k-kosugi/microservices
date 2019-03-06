@@ -17,7 +17,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "allAddress", query = "select a from Address a")
 })
-public class Address implements Serializable {
+public class Address extends SuperModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -45,9 +45,5 @@ public class Address implements Serializable {
 
   @Column(name = "location")
   public String location;
-
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "last_update")
-  public Date lastUpdate;
 
 }

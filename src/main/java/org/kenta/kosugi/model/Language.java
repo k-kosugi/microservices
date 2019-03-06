@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "language")
-public class Language implements Serializable {
+public class Language extends SuperModel {
 
   @Id
   @Column(name = "language_id")
@@ -20,9 +20,5 @@ public class Language implements Serializable {
 
   @Column(name = "name", length = 20)
   public String name;
-
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "last_update")
-  public Date lastUpdate;
 
 }

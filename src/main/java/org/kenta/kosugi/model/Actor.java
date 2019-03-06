@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "actor", indexes = {
         @Index(name = "idx_actor_last_name", columnList = "last_name")
 })
-public class Actor implements Serializable {
+public class Actor extends SuperModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,9 +25,5 @@ public class Actor implements Serializable {
 
     @Column(name = "last_name", length = 45)
     public String lastName;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_update")
-    public Date lastUpdate;
 
 }

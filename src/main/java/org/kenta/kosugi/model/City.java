@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "city", indexes = {
         @Index(name = "idx_fk_country_id", columnList = "country_id")
 })
-public class City implements Serializable {
+public class City extends SuperModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,9 +25,5 @@ public class City implements Serializable {
 
   @Column(name = "country_id", length = 5)
   public long countryId;
-
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "last_update")
-  public Date lastUpdate;
 
 }

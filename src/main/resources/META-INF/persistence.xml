@@ -11,6 +11,7 @@
         <class>org.kenta.kosugi.model.Address</class>
         <class>org.kenta.kosugi.model.City</class>
         <class>org.kenta.kosugi.model.Film</class>
+        <class>org.kenta.kosugi.model.FilmCategory</class>
         <class>org.kenta.kosugi.model.Language</class>
     </persistence-unit>
 
