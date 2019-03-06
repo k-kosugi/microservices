@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -25,7 +26,8 @@ import java.util.Date;
         @Index(name = "idx_title", columnList = "title")
 })
 @NamedQueries({
-        @NamedQuery(name = "allFilm", query = "select a from Film a")
+        @NamedQuery(name = "allFilm", query = "select a from Film a"),
+        @NamedQuery(name = "filmByTitle", query = "select a from Film a where a.title like :title")
 })
 public class Film implements Serializable {
 
@@ -72,5 +74,10 @@ public class Film implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "last_update")
     public Date lastUpdate;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn(name = "film_id", referencedColumnName = "film_id")
+    public FilmCategory filmCategory;
+
 
 }
