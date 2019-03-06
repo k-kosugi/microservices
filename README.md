@@ -4,7 +4,7 @@
 MySQLのsakilaサンプルを利用して作成したAPIです。
 
 ## Film一覧取得API
-* http://${WildFlyのIP}:8080/ms/api/sakila/films
+* GET http://${WildFlyのIP}:8080/ms/api/sakila/films
     * 登録されているすべての映画を取得
     * 戻り値
     ```json
@@ -43,28 +43,30 @@ MySQLのsakilaサンプルを利用して作成したAPIです。
     }
   
     ```
-* http://${WildFlyのIP}:8080/ms/api/sakila/film/{映画名}
+* GET http://${WildFlyのIP}:8080/ms/api/sakila/film/{映画名}
     * 登録されている映画から映画名で検索した結果を取得
-* http://${WildFlyのIP}:8080/ms/api/sakila/film/{id}
+* GET http://${WildFlyのIP}:8080/ms/api/sakila/film/{id}
     * 登録されている映画からfilm_idで映画を検索
+    
+UPDATE/DELETE系のRESTful Serviceはそのうち実装します。    
 
 ## 準備
 ### 本アプリケーションのダウンロードとビルド
 ※ gitを利用します。
 1. git cloneコマンドを利用して本プロジェクトをクローンします。
     ```
-    git clone https://github.com/k-kosugi/microservices.git
+    $ git clone https://github.com/k-kosugi/microservices.git
     ```
 1. gradleを利用してビルドします。
     ```
-    gradlew build
+    $ gradlew build
     ```
     * Gradle Wrapperを使用しているので、必要に応じてgradleがダウンロードされます。
-    * 詳しくは[Gradle Wrapperとは](http://gradle.monochromeroad.com/docs/userguide/gradle_wrapper.html)を参照ください。
+    * 詳しくは[Gradle Wrapper](http://gradle.monochromeroad.com/docs/userguide/gradle_wrapper.html)を参照ください。
 1. build/libsディレクトリにwarファイルが作成されます。
 1. warファイルをWildFlyにデプロイします。※ WildFlyのインストールとデータソースの登録が終わってから
     * 将来的にはDockerfileを記述して自動デプロイするようにします。
-    * ${WILDFLY}/standalone/depoyディレクトリにwarファイルを放り込むことでデプロイ可能です。
+    * ${WILDFLY}/standalone/deployディレクトリにwarファイルを放り込むことでデプロイ可能です。
 
 ### MySQL
 ※ docker for Macを利用します。
@@ -110,47 +112,70 @@ MySQLのsakilaサンプルを利用して作成したAPIです。
     +----------+
     1 row in set (0.01 sec)
     ```
-### Wildfly
+### WildFly
 1. WildFly15.0をダウンロードします。
+1. WildFlyを解答して適当な場所にインストールします。
+1. 以下の場所にdocker/wildfly/mysql-connector-java-8.0.15.jarをデプロイします。
+    ```
+    cp docker/wildfly/mysql-connector-java-8.0.15.jar ${WILDFLY}/standalone/deploy
+    ```
 1. WildFlyにユーザーを登録します。
     ```
-    ${WILDFLY}/bin/add-user.sh <ユーザー名> <パスワード> --silent
+    $ ${WILDFLY}/bin/add-user.sh <ユーザー名> <パスワード> --silent
     ```
 1. WildFlyをバックグラウンドで起動します。
     ```
-    ${WILDFLY}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
+    $ ${WILDFLY}/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0 &
     ```
-1. 以下のコマンドを入力してデータソースを登録します。<br/>{MYSQL}の箇所をMySQLの起動しているdockerのIPアドレスに変更します。
+1. 以下のコマンドを入力してデータソースを登録します。<br/>${MYSQL}の箇所をMySQLの起動しているdockerのIPアドレスに変更します。
     ```
-    ${WILDFLY}/bin/jboss-cli.sh --connect << EOF
+    $ ${WILDFLY}/bin/jboss-cli.sh --connect << EOF
     data-source add \
         --name=MySqlDS \
         --jndi-name=java:/MySqlDS \
         --driver-name=mysql-connector-java-8.0.15.jar \
         --driver-class=com.mysql.cj.jdbc.Driver \
-        --connection-url=jdbc:mysql://{MYSQL}:3306/sakila \
+        --connection-url=jdbc:mysql://${MYSQL}:3306/sakila \
         --user-name=netapp \
         --password=ontap
     EOF
     ```
-### WildFlyの停止
+ 
+### WildFlyの停止方法
 1. WildFlyを停止します。
     ```
     $ ${WILDFLY}/bin/jboss-cli.sh --connect --command=":shutdown"
-    ```
-  
+    ``` 
+ 
 ## 利用技術
 利用技術は以下の通りとなっています。
 
+- IntelliJ IDEA Ultimate Edition/DataGrid
+    - 統合開発環境
 - git/github
-- gradle
+- Gradle
     - Java EEアプリケーション(warファイル)のビルド・テスト・パッケージング
     - Mavenリポジトリからのライブラリ自動ダウンロード
-- Java EE8 - WildFlyを想定
-    - JAX-RS(RESTEasy - WildFly)
-    - JAXB(オブジェクトをJSON化する際に裏で利用)
+- JUnit
+    - 単体テストコード
+        - Gradleのビルド時に自動実行されます
+- Java SE
     - JPA(EclipseLink)
+    - JDBC(JPAが隠蔽、ただしsrc/resources/META-INF/persisntece.xmlに一部設定が必要)
+- Java EE8
+    - JAX-RS(RESTEasy - WildFly)
+    - JSON-B(オブジェクトをJSON化する際に裏で利用)
     - [予定]Swagger for RESTEasy
+- Jenkins on docker(Optional)
+    - githubへのpushを契機にGradleのビルド実行を自動化
+- Java EEサーバー WildFly
+    - DataSource(データベースへのコネクションプール)
+    - RedHat JBoss Application Serverの無償版
+- MySQL
+    - 将来的にはMariaDB Garela Clusterでの構築を予定。
 - docker for Mac
     - MySQL - Dockerfileを利用してビルド。[sakila](https://dev.mysql.com/doc/sakila/en/)サンプルを初期イメージ作成時に作成する。
     - WildFly - Dockerfileを利用してビルド予定。
+- [予定] Kubernetes 
+    - dockerで作成したイメージを利用して3 tierを予定
+        - nginx <--> wildfly <--> MariaDB(Cluster)
