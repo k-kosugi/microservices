@@ -37,7 +37,7 @@ public class SakilaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Film> getFilmBytitle(@PathParam(value = "name") String name){
         return this.em.createNamedQuery("filmByTitle", Film.class)
-                .setParameter("title", name)
+                .setParameter("title", "%" + name + "%")
                 .getResultList();
     }
 

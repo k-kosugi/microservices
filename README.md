@@ -4,10 +4,10 @@
 MySQLのsakilaサンプルを利用して作成したAPIです。
 
 ## Film一覧取得API
-http://{WildFlyのIP}:8080/api/sakila/films
-
-### 戻り値
-```json
+* http://${WildFlyのIP}:8080/ms/api/sakila/films
+    * 登録されているすべての映画を取得
+    * 戻り値
+    ```json
     {
         "description": "A Emotional Tale of a Pastry Chef And a Forensic Psychologist who must Succumb a Monkey in The Sahara Desert",
         "filmCategory": {
@@ -41,8 +41,12 @@ http://{WildFlyのIP}:8080/api/sakila/films
     {
       //略
     }
- 
-```
+  
+    ```
+* http://${WildFlyのIP}:8080/ms/api/sakila/film/<映画名>
+    * 登録されている映画から映画名で検索した結果を取得
+* http://${WildFlyのIP}:8080/ms/api/sakila/<id>
+    * 登録されている映画からfilm_idで映画を検索
 
 ## 準備
 ### 本アプリケーションのダウンロードとビルド
@@ -58,7 +62,7 @@ http://{WildFlyのIP}:8080/api/sakila/films
     * Gradle Wrapperを使用しているので、必要に応じてgradleがダウンロードされます。
     * 詳しくは[Gradle Wrapperとは](http://gradle.monochromeroad.com/docs/userguide/gradle_wrapper.html)を参照ください。
 1. build/libsディレクトリにwarファイルが作成されます。
-1. warファイルをWildFlyにデプロイします。
+1. warファイルをWildFlyにデプロイします。※ WildFlyのインストールとデータソースの登録が終わってから
     * 将来的にはDockerfileを記述して自動デプロイするようにします。
     * ${WILDFLY}/standalone/depoyディレクトリにwarファイルを放り込むことでデプロイ可能です。
 
