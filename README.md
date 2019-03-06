@@ -56,7 +56,7 @@ http://{WildFlyのIP}:8080/api/sakila/films
     gradlew build
     ```
     * Gradle Wrapperを使用しているので、必要に応じてgradleがダウンロードされます。
-    * 詳しくは[Gradl Wrapperとは](http://gradle.monochromeroad.com/docs/userguide/gradle_wrapper.html)を参照ください。
+    * 詳しくは[Gradle Wrapperとは](http://gradle.monochromeroad.com/docs/userguide/gradle_wrapper.html)を参照ください。
 1. build/libsディレクトリにwarファイルが作成されます。
 1. warファイルをWildFlyにデプロイします。
     * 将来的にはDockerfileを記述して自動デプロイするようにします。
